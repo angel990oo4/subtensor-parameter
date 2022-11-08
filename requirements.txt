@@ -1,3 +1,3 @@
-flask
-bittensor
+flask==2.2.2
+bittensor==3.4.0
 flask_cors
