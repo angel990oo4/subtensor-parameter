@@ -50,3 +50,5 @@ def bit_stake_range():
                     pbar.update(1)
     return jsonify({"stake_range":stake_range})
 
+if __name__ == '__main__':
+   app.run(debug=True)
