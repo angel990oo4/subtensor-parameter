@@ -3,6 +3,7 @@ from flask import Flask, jsonify
 from flask_cors import CORS
 from tqdm import tqdm
 from concurrent.futures import ThreadPoolExecutor, as_completed
+import rich, subtensorapi
 
 app = Flask(__name__)
 CORS(app, supports_credentials=True)
@@ -50,5 +51,11 @@ def bit_stake_range():
                     pbar.update(1)
     return jsonify({"stake_range":stake_range})
 
+@app.route("/subtensorapi")
+def bit_subtensorapi():
+    fastsync = subtensorapi.FastSync("wss://archivelb.nakamoto.opentensor.ai:9943")
+    fastsync.sync_and_save_historical(rich.console.Console(), [2663133], [1])
+    historical_data = fastsync.load_historical_neurons()
+    print('historical_data',historical_data)
 if __name__ == '__main__':
    app.run(debug=True)
