@@ -1,10 +1,10 @@
 # import bittensor
 from flask import Flask, jsonify
+import json
 from flask_cors import CORS
 # from tqdm import tqdm
 # from concurrent.futures import ThreadPoolExecutor, as_completed
 import rich, subtensorapi
-
 app = Flask(__name__)
 CORS(app, supports_credentials=True)
 # sub = bittensor.subtensor()
@@ -56,6 +56,6 @@ def bit_subtensorapi():
     fastsync = subtensorapi.FastSync("wss://archivelb.nakamoto.opentensor.ai:9943")
     fastsync.sync_and_save_historical(rich.console.Console(), ["2663133", "2663132", "2663131"], [1, 2], "FILENAMETHATYOUCANACCESS")
     historical_data = fastsync.load_historical_neurons("FILENAMETHATYOUCANACCESS")
-    print('historical_data',historical_data)
+    return json.dumps(historical_data, default=lambda x: x.__dict__)
 if __name__ == '__main__':
    app.run(debug=True)
