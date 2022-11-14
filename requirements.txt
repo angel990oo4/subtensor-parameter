@@ -154,7 +154,7 @@ sortedcontainers==2.4.0
 soupsieve==2.3.2.post1
 stack-data==0.5.1
 substrate-interface==1.2.4
-subtensorapi==0.2.0
+subtensorapi==0.2.3
 termcolor==2.0.1
 terminado==0.16.0
 tinycss2==1.2.1
