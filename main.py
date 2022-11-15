@@ -1,20 +1,20 @@
-# import bittensor
+import bittensor
 from flask import Flask, jsonify, request
 import json
 from flask_cors import CORS
 from tqdm import tqdm
 # from concurrent.futures import ThreadPoolExecutor, as_completed
-# import rich, subtensorapi
+import rich, subtensorapi
 app = Flask(__name__)
 CORS(app, supports_credentials=True)
-# sub = bittensor.subtensor()
+sub = bittensor.subtensor()
 
 @app.route('/')
 def hello_world():
     return 'Bittensor Cli Bot'
-# @app.route('/bot')
-# def bit_bot():
-#     return jsonify({"block": f"{str(sub.block)}", "difficulty": f"{str(sub.difficulty)}", "totalIssuance": f"{str(sub.total_issuance)}" })
+@app.route('/bot')
+def bit_bot():
+    return jsonify({"block": f"{str(sub.block)}", "difficulty": f"{str(sub.difficulty)}", "totalIssuance": f"{str(sub.total_issuance)}" })
 
 # @app.route("/stake")
 # def bit_stake():
@@ -57,11 +57,15 @@ def bit_subtensorapi_test():
 
     return "Test history data"
 
-# @app.route("/subtensorapi")
-# def bit_subtensorapi():
-#     fastsync = subtensorapi.FastSync("wss://archivelb.nakamoto.opentensor.ai:9943")
-#     fastsync.sync_and_save_historical(rich.console.Console(), ["2663133", "2663132", "2663131"], [1, 2], "FILENAMETHATYOUCANACCESS")
-#     historical_data = fastsync.load_historical_neurons("FILENAMETHATYOUCANACCESS")
-#     return json.dumps(historical_data, default=lambda x: x.__dict__)
+@app.route("/subtensorapi")
+def bit_subtensorapi():
+    print('request.get_json()', request.get_json())
+    uid = request.get_json()['uid']
+    days = int(request.get_json()['range'])
+    blocks = list(range(sub.block - (7200 * days), sub.block, 7200))
+    fastsync = subtensorapi.FastSync("wss://archivelb.nakamoto.opentensor.ai:9943")
+    fastsync.sync_and_save_historical(rich.console.Console(), blocks, [uid], "FILENAMETHATYOUCANACCESS")
+    historical_data = fastsync.load_historical_neurons("FILENAMETHATYOUCANACCESS")
+    return json.dumps(historical_data, default=lambda x: x.__dict__)
 if __name__ == '__main__':
    app.run(debug=True)
