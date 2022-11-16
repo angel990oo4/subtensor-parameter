@@ -19,7 +19,6 @@ def bit_bot():
 
 @app.route("/subtensorapi")
 def bit_subtensorapi():
-    print('request.get_json()', request.get_json())
     uid = request.get_json()['uid']
     days = int(request.get_json()['range'])
     blocks = list(range(sub.block - (7200 * days), sub.block, 7200))
