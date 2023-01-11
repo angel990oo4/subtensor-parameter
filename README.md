@@ -4,3 +4,6 @@ $ source venv/bin/activate
 (venv) $ python -m flask --version
 $ export FLASK_APP=main.py
 (venv) $ flask run
+
+pm2 start main.py --name chain-data --interpreter=python3
+pm2 start main.py --interpreter python3
